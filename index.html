@@ -1040,15 +1040,19 @@ document.querySelectorAll(".nav-links a").forEach(link => {
 
 /* Share button: native share sheet on mobile, clipboard copy fallback */
 function shareSite(){
+  // Strip out any #hash or query parameters to share the clean root URL
+  const cleanUrl = window.location.origin + window.location.pathname;
+  
   const shareData = {
     title: document.title,
     text: "Africa Is Not Poor. It Is Unprocessed. — Mary Wambui Njeru",
-    url: window.location.href
+    url: cleanUrl
   };
+  
   if (navigator.share) {
     navigator.share(shareData).catch(() => {});
   } else {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+    navigator.clipboard.writeText(cleanUrl).then(() => {
       const toast = document.getElementById("shareToast");
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 2500);
